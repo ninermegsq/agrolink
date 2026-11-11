@@ -28,6 +28,8 @@
     "git:commit": "git add -A && git -c user.name=AGROLINK -c user.email=dev@agrolink.com.br commit -m \"chore: prepara o AGROLINK para o Supabase e para o GitHub\"",
     "git:remote": "git remote add origin https://github.com/agrolink/agrolink.git",
     "git:status": "git status -sb && git remote -v",
+    "git:log": "git log --oneline --name-status --all",
+    "git:clean-history": "git filter-branch --force --index-filter \"git rm --cached --ignore-unmatch .manus-starter-init.json\" --prune-empty -- --all && git reflog expire --expire=now --all && git gc --prune=now --aggressive",
     "dev": "cross-env NODE_ENV=development tsx watch server/_core/index.ts",
     "build": "vite build && esbuild server/_core/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist",
     "start": "cross-env NODE_ENV=production node dist/index.js",
