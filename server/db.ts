@@ -31,10 +31,38 @@ import { createLocalOpenId } from "./_core/session";
 let _db: ReturnType<typeof drizzle> | null = null;
 let _client: ReturnType<typeof postgres> | null = null;
 
+/**
+ * Opcoes do driver conforme a string de conexao.
+ *
+ * O Supabase expoe duas URLs: a direta (porta 5432) e o *transaction pooler*
+ * (porta 6543 ou `?pgbouncer=true`). O pooler de transacoes nao aceita
+ * prepared statements, por isso o driver e configurado com `prepare: false`
+ * nesses casos — sem isso, qualquer consulta falha com
+ * "prepared statement does not exist".
+ *
+ * O TLS e definido pelo proprio parametro `sslmode` da URL
+ * (`?sslmode=require` / `?sslmode=verify-full`), que o driver postgres.js
+ * interpreta nativamente.
+ */
+function buildClientOptions(url: string) {
+  const options: { max: number; onnotice: () => void; prepare?: boolean } = {
+    max: 10,
+    onnotice: () => {},
+  };
+  try {
+    const parsed = new URL(url);
+    const usesPooler = parsed.port === "6543" || parsed.searchParams.get("pgbouncer") === "true";
+    if (usesPooler) options.prepare = false;
+  } catch {
+    // URL fora do formato padrao: mantem as opcoes basicas.
+  }
+  return options;
+}
+
 export async function getDb() {
   if (!_db && process.env.DATABASE_URL) {
     try {
-      _client = postgres(process.env.DATABASE_URL, { max: 10, onnotice: () => {} });
+      _client = postgres(process.env.DATABASE_URL, buildClientOptions(process.env.DATABASE_URL));
       _db = drizzle(_client);
     } catch (error) {
       console.warn("[Database] Failed to connect:", error);

@@ -58,6 +58,19 @@ pnpm db:migrate   # aplica as migrações no banco
 Comandos auxiliares: `pnpm db:push` (gera e aplica de uma vez) e `pnpm db:studio`
 (abre o Drizzle Studio para inspecionar os dados).
 
+> **Conexão direta vs. pooler.** O Supabase oferece duas URLs: a direta (porta
+> `5432`) e o *pooler de transações* (porta `6543`, ou a mesma URL com
+> `?pgbouncer=true`). Use a **direta** para rodar `pnpm db:migrate` e o
+> **pooler** para a aplicação em produção. O driver detecta o pooler pela porta
+> e desliga *prepared statements* automaticamente — sem isso, as consultas
+> falham com `prepared statement does not exist`. O TLS é definido pelo
+> parâmetro `?sslmode=require` da própria URL.
+
+Ao criar a primeira conta pela tela `/login`, o AGROLINK provisiona
+automaticamente a organização, as categorias, as tags, o modelo de mensagem
+padrão e a assinatura do usuário — um banco Supabase recém-criado já funciona
+sem configuração extra.
+
 ## 5. Executando
 
 ```bash
@@ -81,7 +94,11 @@ A aplicação fica em `http://localhost:3000` por padrão.
 pnpm check   # tsc --noEmit
 pnpm test    # vitest run
 pnpm format  # prettier --write .
+pnpm smoke   # sobe o build e verifica /api/health, a home, /login, o tRPC e o logo
 ```
+
+O GitHub Actions executa `check`, `test` e `build` em cada push
+(`.github/workflows/ci.yml`).
 
 ## 7. Estrutura
 

@@ -24,7 +24,7 @@
   "scripts": {
     "deps:update": "pnpm install --no-frozen-lockfile",
     "git:init": "git init -b main && git add -A && git -c user.name=AGROLINK -c user.email=dev@agrolink.com.br commit -m \"chore: base inicial do AGROLINK\"",
-    "git:commit": "git add -A && git -c user.name=AGROLINK -c user.email=dev@agrolink.com.br commit -m \"chore: ajustes de marca, login local e migracao para o PostgreSQL\"",
+    "git:commit": "git add -A && git -c user.name=AGROLINK -c user.email=dev@agrolink.com.br commit -m \"chore: prepara o AGROLINK para o Supabase e para o GitHub\"",
     "git:remote": "git remote add origin https://github.com/agrolink/agrolink.git",
     "git:status": "git status -sb && git remote -v",
     "dev": "cross-env NODE_ENV=development tsx watch server/_core/index.ts",
@@ -39,7 +39,8 @@
     "db:push": "drizzle-kit generate && drizzle-kit migrate",
     "db:studio": "drizzle-kit studio",
     "dev:static": "node scripts/dev-static.mjs",
-    "build:static": "vite build"
+    "build:static": "vite build",
+    "smoke": "node scripts/smoke.mjs"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.693.0",
@@ -79,7 +80,6 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
-    "cookie": "^1.0.2",
     "date-fns": "^4.1.0",
     "dotenv": "^17.2.2",
     "drizzle-orm": "^0.44.5",
