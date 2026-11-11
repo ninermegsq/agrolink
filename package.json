@@ -30,6 +30,7 @@
     "git:status": "git status -sb && git remote -v",
     "git:log": "git log --oneline --name-status --all",
     "git:clean-history": "git filter-branch --force --index-filter \"git rm --cached --ignore-unmatch .manus-starter-init.json\" --prune-empty -- --all && git reflog expire --expire=now --all && git gc --prune=now --aggressive",
+    "git:purge-refs": "git for-each-ref --format=\"delete %(refname)\" refs/original | git update-ref --stdin && git reflog expire --expire=now --all && git gc --prune=now --aggressive",
     "dev": "cross-env NODE_ENV=development tsx watch server/_core/index.ts",
     "build": "vite build && esbuild server/_core/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist",
     "start": "cross-env NODE_ENV=production node dist/index.js",
