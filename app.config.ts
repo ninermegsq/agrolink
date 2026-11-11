@@ -1,0 +1,3 @@
+{
+  "logoUrl": "/agrolink-logo.svg"
+}

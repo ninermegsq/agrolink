@@ -1,0 +1,27 @@
+{
+  "id": "agrolink-web",
+  "name": "AGROLINK (web app)",
+  "description": "CRM do agronegocio: base central de contatos, importacao de planilhas, CRM leve e modelos de mensagem.",
+  "capabilities": [
+    "server",
+    "db",
+    "user"
+  ],
+  "files": [
+    "package.json",
+    "drizzle/schema.ts",
+    "server/db.ts",
+    "server/routers.ts",
+    "client/index.html",
+    "client/src/App.tsx",
+    "client/src/lib/trpc.ts",
+    "client/src/pages/Home.tsx",
+    "client/src/pages/Login.tsx",
+    "server/auth.logout.test.ts"
+  ],
+  "source": {
+    "repository": "https://github.com/agrolink/agrolink",
+    "branch": "main",
+    "path": "."
+  }
+}
