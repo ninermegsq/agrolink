@@ -23,6 +23,7 @@
   ],
   "scripts": {
     "deps:update": "pnpm install --no-frozen-lockfile",
+    "deps:ci": "pnpm install --frozen-lockfile",
     "git:init": "git init -b main && git add -A && git -c user.name=AGROLINK -c user.email=dev@agrolink.com.br commit -m \"chore: base inicial do AGROLINK\"",
     "git:commit": "git add -A && git -c user.name=AGROLINK -c user.email=dev@agrolink.com.br commit -m \"chore: prepara o AGROLINK para o Supabase e para o GitHub\"",
     "git:remote": "git remote add origin https://github.com/agrolink/agrolink.git",

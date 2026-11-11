@@ -65,7 +65,7 @@ Posicionamento: **o CRM de relacionamento para equipes que transformam contatos 
 - `server/catalog.ts` — catálogo central, acesso por assinatura, favoritos/anotações privados e importação/publicação administrativa.
 - `server/actions.ts` — mutações de contatos particulares, modelos de mensagem e configurações da organização.
 - `server/import/` — aliases, parser XLSX/CSV, normalização de telefone/endereço e detecção de duplicados.
-- `drizzle/schema.ts` e `drizzle/migrations/` — modelo persistente e migrações aditivas.
+- `drizzle/schema.ts` e as migrações em `drizzle/` — modelo persistente e migrações aditivas.
 - `client/public/routes.json`, `client/public/robots.txt` e metadata — rotas públicas e proteção de páginas autenticadas.
 - `app.config.ts` — metadata do logotipo e identidade do projeto.
 
