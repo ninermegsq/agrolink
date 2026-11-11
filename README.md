@@ -46,25 +46,60 @@ Preencha no `.env`:
 
 ## 4. Banco de dados (Supabase)
 
-1. No Supabase, abra **Settings → Database → Connection string → URI (PostgreSQL)**.
-2. Cole a string em `DATABASE_URL` no `.env`.
-3. Crie o schema:
+O projeto já está ligado ao Supabase **`jjjeempjwjjrnvkvgbjb`** (*agrolink*) e o
+schema completo está aplicado: **19 enums, 22 tabelas e 28 índices** (52 no
+total, contando as chaves primárias e as unicidades), com **RLS habilitado em
+todas as tabelas**.
 
-```bash
-pnpm db:generate   # gera as migrações a partir de drizzle/schema.ts
-pnpm db:migrate   # aplica as migrações no banco
+### O que já está configurado
+
+| Item | Estado |
+| --- | --- |
+| Schema `public` | 22 tabelas (`users`, `organizations`, `contacts`, `catalogContacts`, `imports`, `tasks`, …) |
+| Row Level Security | Ativado nas 22 tabelas |
+| Políticas RLS | 44 políticas: `agrolink_app` (aplicação) e `service_role`. `anon` e `authenticated` **não têm política nenhuma** — com RLS ativo o acesso é negado por padrão, então o PostgREST devolve zero linhas. O front-end não conversa direto com o Supabase, tudo passa pela API |
+| Papel da aplicação | `agrolink_app` — `LOGIN`, **sem** superusuário e **sem** `BYPASSRLS`; o acesso vem das políticas RLS |
+| Registro de migrações | `drizzle.__drizzle_migrations` com a migração `0000_tiresome_nick_fury` |
+
+### String de conexão
+
+O `.env` local já vem preenchido com:
+
+```
+DATABASE_URL=postgresql://agrolink_app:SENHA@db.jjjeempjwjjrnvkvgbjb.supabase.co:5432/postgres?sslmode=require
 ```
 
-Comandos auxiliares: `pnpm db:push` (gera e aplica de uma vez) e `pnpm db:studio`
-(abre o Drizzle Studio para inspecionar os dados).
+> **Por que a conexão direta e não o pooler?** O *pooler de transações* do
+> Supabase (porta `6543`) só aceita o usuário `postgres.<ref>`. Como a
+> aplicação usa o papel dedicado `agrolink_app`, ela usa a **conexão direta**
+> (porta `5432`). O driver continua detectando o pooler automaticamente pela
+> porta `6543` (ou por `?pgbouncer=true`) e desligando *prepared statements*
+> quando ele for usado — necessário porque o pooler não aceita statements
+> preparados. O TLS é definido pelo parâmetro `?sslmode=require` da própria URL.
 
-> **Conexão direta vs. pooler.** O Supabase oferece duas URLs: a direta (porta
-> `5432`) e o *pooler de transações* (porta `6543`, ou a mesma URL com
-> `?pgbouncer=true`). Use a **direta** para rodar `pnpm db:migrate` e o
-> **pooler** para a aplicação em produção. O driver detecta o pooler pela porta
-> e desliga *prepared statements* automaticamente — sem isso, as consultas
-> falham com `prepared statement does not exist`. O TLS é definido pelo
-> parâmetro `?sslmode=require` da própria URL.
+### Para configurar outro projeto
+
+1. No Supabase, abra **Settings → Database → Connection string → URI (PostgreSQL)**.
+2. Crie um papel para a aplicação (sem superusuário) e registre as permissões:
+
+```sql
+CREATE ROLE agrolink_app LOGIN PASSWORD 'SENHA-FORTE' NOSUPERUSER NOCREATEDB NOCREATEROLE INHERIT;
+GRANT USAGE ON SCHEMA public TO agrolink_app;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO agrolink_app;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON SEQUENCES TO agrolink_app;
+```
+
+3. Aplique o schema e as políticas:
+
+```bash
+pnpm db:migrate   # aplica drizzle/0000_tiresome_nick_fury.sql
+pnpm db:check     # confere tabelas, RLS, políticas e o registro de migrações
+```
+
+Comandos auxiliares: `pnpm db:generate` (gera migrações a partir de
+`drizzle/schema.ts`), `pnpm db:push` (gera e aplica de uma vez), `pnpm db:hash`
+(imprime o hash das migrações, útil quando elas são aplicadas pelo painel do
+Supabase) e `pnpm db:studio` (abre o Drizzle Studio para inspecionar os dados).
 
 Ao criar a primeira conta pela tela `/login`, o AGROLINK provisiona
 automaticamente a organização, as categorias, as tags, o modelo de mensagem
@@ -91,10 +126,11 @@ A aplicação fica em `http://localhost:3000` por padrão.
 ## 6. Qualidade
 
 ```bash
-pnpm check   # tsc --noEmit
-pnpm test    # vitest run
-pnpm format  # prettier --write .
-pnpm smoke   # sobe o build e verifica /api/health, a home, /login, o tRPC e o logo
+pnpm check     # tsc --noEmit
+pnpm test      # vitest run
+pnpm format    # prettier --write .
+pnpm smoke     # sobe o build e verifica /api/health, a home, /login, o tRPC e o logo
+pnpm db:check  # confere a conexao com o Supabase, o schema, o RLS e as migrações
 ```
 
 O GitHub Actions executa `check`, `test` e `build` em cada push

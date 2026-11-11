@@ -44,7 +44,9 @@
     "db:studio": "drizzle-kit studio",
     "dev:static": "node scripts/dev-static.mjs",
     "build:static": "vite build",
-    "smoke": "node scripts/smoke.mjs"
+    "smoke": "node scripts/smoke.mjs",
+    "db:check": "node scripts/db-check.mjs",
+    "db:hash": "node scripts/db-migration-hashes.mjs"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.693.0",
