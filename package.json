@@ -26,6 +26,7 @@
     "deps:ci": "pnpm install --frozen-lockfile",
     "git:init": "git init -b main && git add -A && git -c user.name=AGROLINK -c user.email=dev@agrolink.com.br commit -m \"chore: base inicial do AGROLINK\"",
     "git:commit": "git add -A && git -c user.name=AGROLINK -c user.email=dev@agrolink.com.br commit -m \"chore: prepara o AGROLINK para o Supabase e para o GitHub\"",
+    "git:commit:login": "git add -A && git -c user.name=AGROLINK -c user.email=dev@agrolink.com.br commit -m \"feat: novo tema da pagina de acesso com o mapa da rede\"",
     "git:remote": "git remote set-url origin https://github.com/ninermegsq/agrolink.git",
     "git:branch": "git branch -M main && git branch -vv",
     "git:push": "git push -u origin main",

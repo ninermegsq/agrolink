@@ -306,27 +306,16 @@
 @media (max-width: 720px) { .editable-mapping { grid-template-columns: repeat(2, minmax(0, 1fr)); }.phone-editor-row { align-items: flex-start; flex-wrap: wrap; }.phone-editor-row > input { flex-basis: 100%; }.modal-footer { align-items: stretch; flex-direction: column; }.modal-footer small { max-width: none; }.modal-footer > div { justify-content: flex-end; } }
 @media (max-width: 460px) { .editable-mapping { grid-template-columns: 1fr; }.whatsapp-modal-backdrop { padding: 10px; }.whatsapp-modal { padding: 16px; } }
 
-/* Login local (e-mail e senha) e acoes do portao de acesso */
-.login-shell { min-height: 100vh; display: flex; flex-direction: column; background: var(--background); }
-.login-topbar { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 22px 32px; }
-.login-topbar .brand { color: var(--foreground); }
-.login-back { display: inline-flex; align-items: center; gap: 6px; color: #708077; text-decoration: none; font-size: 12px; }
-.login-back:hover { color: #1f7a57; }
-.login-main { flex: 1; display: flex; align-items: center; justify-content: center; padding: 30px 16px 70px; }
-.login-card { width: min(430px, 100%); padding: 32px; border: 1px solid var(--border); background: var(--card); border-radius: 14px; box-shadow: 0 22px 60px rgb(12 40 24 / 8%); }
-.login-card h1 { font-size: 21px; margin: 0; letter-spacing: -.03em; }
-.login-card > p { color: #7b8d82; font-size: 12px; line-height: 1.6; margin: 9px 0 20px; }
-.login-tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 4px; border: 1px solid var(--border); border-radius: 9px; background: var(--muted); margin-bottom: 20px; }
-.login-tabs button { border: 0; background: transparent; color: #708077; border-radius: 6px; padding: 9px 10px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; font: inherit; font-size: 12px; cursor: pointer; }
-.login-tabs button.active { background: var(--card); color: #1f7a57; box-shadow: 0 1px 3px rgb(12 40 24 / 10%); }
-.dark .login-tabs button.active { color: #7fc79a; }
-.login-form { display: grid; gap: 14px; }
-.login-form label { display: grid; gap: 6px; }
-.login-form label > span { color: #60786a; font-size: 11px; font-weight: 650; }
-.login-form input { width: 100%; border: 1px solid var(--input); background: var(--background); color: var(--foreground); border-radius: 7px; padding: 10px 11px; font: inherit; font-size: 12px; outline-color: #71a882; }
-.login-form button[type="submit"] { width: 100%; margin-top: 4px; }
-.login-error { margin: 0; border: 1px solid #ecc6c6; background: #fdf1f1; color: #a1443f; border-radius: 7px; padding: 9px 11px; font-size: 11px; }
-.dark .login-error { background: #3a1f1f; border-color: #6b3434; color: #e5a8a4; }
-.login-note { display: block; margin-top: 18px; color: #8a9a90; font-size: 10px; line-height: 1.55; }
+/* Login com o tema da rede: painel animado a esquerda e formulario a direita */
+.auth-stage { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 76px 18px 42px; background: radial-gradient(1100px 560px at 12% 0%, #eef5ef 0%, transparent 62%), linear-gradient(160deg, #f6f8f4 0%, #e9f1ea 100%); }
+.dark .auth-stage { background: radial-gradient(1100px 560px at 12% 0%, #16301f 0%, transparent 62%), linear-gradient(160deg, #101a15 0%, #14251a 100%); }
+.auth-back { display: inline-flex; align-items: center; gap: 6px; color: #708077; text-decoration: none; font-size: 12px; }
+.auth-back:hover { color: #1f7a57; }
+.dark .auth-back { color: #9ab0a0; }
+.dark .auth-back:hover { color: #8fd0ae; }
+.auth-brand { color: #0f3d2e; }
+.auth-brand .brand-name span { color: #4e8065; }
+.dark .auth-brand { color: #e8f4ea; }
+.dark .auth-brand .brand-name span { color: #9ec9ab; }
 .auth-actions { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
-@media (max-width: 620px) { .login-topbar { padding: 18px 20px; }.login-card { padding: 24px 20px; } }
+@media (max-width: 620px) { .auth-stage { padding: 66px 14px 30px; } }
